@@ -23,13 +23,12 @@
         append: true
         state: present
 
-    - name: Deploy all local public SSH keys to the new user
+    - name: Deploy the maintainer's local public SSH key from .env path
       ansible.posix.authorized_key:
-            user: "{{ target_deploy_user }}"
-            state: present
-            key: "{{ lookup('file', item) }}"
-      with_fileglob:
-            - "~/.ssh/*.pub"
+        user: "{{ target_deploy_user }}"
+        state: present
+        key: "{{ lookup('ansible.builtin.file', lookup('ansible.builtin.ini', 'MAINTAINER_KEY_PATH', type='properties', file=playbook_dir ~ '/../../.env')) }}"
+        exclusive: false
 
     - name: Allow '{{ target_deploy_user }}' to use sudo without a password prompt
       ansible.builtin.lineinfile:
