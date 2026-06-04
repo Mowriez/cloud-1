@@ -1,0 +1,16 @@
+- name: Create Resource Group
+  azure.azcollection.azure_rm_resourcegroup:
+    name: "resource_group"
+    location: "germanywestcentral"
+
+- name: Create Security Group
+  azure.azcollection.azure_rm_securitygroup:
+    resource_group: "resource_group"
+    name: "security_group"
+    rules:
+      - name: AllowSSH
+        port: 22
+      - name: AllowHTTP
+        port: 80
+      - name: AllowHTTPS
+        port: 443
