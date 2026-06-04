@@ -1,16 +1,42 @@
 - name: Create Resource Group
   azure.azcollection.azure_rm_resourcegroup:
-    name: "resource_group"
+    name: {{resource_group}}
     location: "germanywestcentral"
 
 - name: Create Security Group
   azure.azcollection.azure_rm_securitygroup:
-    resource_group: "resource_group"
-    name: "security_group"
+    resource_group: {{resource_group}}
+    name: {{security_group}}
     rules:
       - name: AllowSSH
-        port: 22
+        protocol: Tcp
+        destination_port_range: {{ssh_port}}
+        source_address_prefix: "*"
+        destination_address_prefix: "*"
+        access: Allow
+        priority: 100
+        direction: Inbound
+
       - name: AllowHTTP
-        port: 80
+        protocol: Tcp
+        destination_port_range: {{http_port}}
+        source_address_prefix: "*"
+        destination_address_prefix: "*"
+        access: Allow
+        priority: 110
+        direction: Inbound
+
       - name: AllowHTTPS
-        port: 443
+        protocol: Tcp
+        destination_port_range: {{https_port}}
+        source_address_prefix: "*"
+        destination_address_prefix: "*"
+        access: Allow
+        priority: 120
+        direction: Inbound
+
+- name: Create Virtual Network and Subnet
+  azure.azcollection.azure_rm_virtualnetwork:
+    resource_group: {{resource_group}}
+    name: {{virtual_network}}
+    address_prefixes: "10.0.0.0/16"

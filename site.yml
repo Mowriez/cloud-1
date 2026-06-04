@@ -2,5 +2,16 @@
   hosts: localhost
   connection: local
   roles:
-    - azure_infra
+    - role: azure_infra
+      tasks_from: main.yml
+  tags: provision
 
+- name: Destroy Azure Infrastructure
+  hosts: localhost
+  connection: local
+  roles:
+    - role: azure_infra
+      tasks_from: destroy
+  tags: 
+    - destroy
+    - never

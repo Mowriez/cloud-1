@@ -1,2 +1,8 @@
 resource_group: "{{ lookup('env', 'RESOURCE_GROUP') }}"
 security_group: "{{ lookup('env', 'SECURITY_GROUP') }}"
+
+http_port: "{{ lookup('env', 'HTTP_PORT') }}"
+ssh_port: "{{ lookup('env', 'SSH_PORT') }}"
+https_port: "{{ lookup('env', 'HTTPS_PORT') }}"
+
+virtual_network: "{{ lookup('env', 'VIRTUAL_NETWORK') }}"
