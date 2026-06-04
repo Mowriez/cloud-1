@@ -1,101 +1,106 @@
-# - name: Create Resource Group
-#   azure.azcollection.azure_rm_resourcegroup:
-#     name: "{{resource_group_name}}"
-#     location: "{{location}}"
-
-# - name: Create Security Group
-#   azure.azcollection.azure_rm_securitygroup:
-#     resource_group: "{{resource_group_name}}"
-#     name: "{{security_group_name}}"
-#     location: "{{location}}"
-#     rules:
-#       - name: AllowSSH
-#         protocol: Tcp
-#         destination_port_range: "{{ssh_port}}"
-#         source_address_prefix: "*"
-#         destination_address_prefix: "*"
-#         access: Allow
-#         priority: 100
-#         direction: Inbound
-
-#       - name: AllowHTTP
-#         protocol: Tcp
-#         destination_port_range: "{{http_port}}"
-#         source_address_prefix: "*"
-#         destination_address_prefix: "*"
-#         access: Allow
-#         priority: 110
-#         direction: Inbound
-
-#       - name: AllowHTTPS
-#         protocol: Tcp
-#         destination_port_range: "{{https_port}}"
-#         source_address_prefix: "*"
-#         destination_address_prefix: "*"
-#         access: Allow
-#         priority: 120
-#         direction: Inbound
-
-# - name: Create Virtual Network
-#   azure.azcollection.azure_rm_virtualnetwork:
-#     resource_group: "{{resource_group_name}}"
-#     name: "{{virtual_network_name}}"
-#     location: "{{location}}"
-#     address_prefixes: "{{virtual_network_address_prefix}}"
-
-# - name: Create Subnet inside the Virtual Network
-#   azure.azcollection.azure_rm_subnet:
-#     resource_group: "{{resource_group_name}}"
-#     virtual_network: "{{virtual_network_name}}"
-#     name: "{{virtual_network_subnet_name}}"
-#     address_prefix: "{{virtual_network_subnet_address_prefix}}"
-
-# - name: Create Public IP Address
-#   azure.azcollection.azure_rm_publicipaddress:
-#     resource_group: "{{resource_group_name}}"
-#     name: "{{public_ip_name}}"
-#     location: "{{location}}"
-#     allocation_method: Static
-#     sku: Standard
-
-# - name: Create Network Interface
-#   azure.azcollection.azure_rm_networkinterface:
-#     resource_group: "{{resource_group_name}}"
-#     name: "{{network_interface_name}}"
-#     location: "{{location}}"
-#     security_group: "{{security_group_name}}"
-#     subnet_name: "{{virtual_network_subnet_name}}"
-#     virtual_network: "{{virtual_network_name}}"
-#     ip_configurations:
-#       - name: default_ip_config
-#         public_ip_address_name: "{{public_ip_name}}"
-#         primary: true
-
-# - name: Create VM in Azure
-#   azure.azcollection.azure_rm_virtualmachine:
-#     resource_group: "{{resource_group_name}}"
-#     name: "{{vm_name}}"
-#     location: "{{location}}"
-#     vm_size: "{{vm_size}}"
-#     managed_disk_type: "{{managed_disk_type}}"
-#     image: "{{vm_image}}"
-#     admin_username: "{{vm_admin_username}}"
-#     admin_password: "{{vm_admin_password}}"
-#     ssh_password_enabled: true
-#     network_interfaces: "{{network_interface_name}}"
-
-# - name: Get Public IP Info
-#   azure.azcollection.azure_rm_publicipaddress_info:
-#     resource_group: "{{resource_group_name}}"
-#     name: "{{public_ip_name}}"
-#   register: public_ip_info
-
-# - name: Show Public IP
-#   debug:
-#     msg: "SSH into VM: ssh {{vm_admin_username}}@{{ public_ip_info.publicipaddresses[0].ip_address }}"
-
-- name: Delete Resource Group
+- name: Create Resource Group
   azure.azcollection.azure_rm_resourcegroup:
-    name: "{{ resource_group_name }}"
-    state: absent
-    force_delete_nonempty: true
+    name: "{{resource_group_name}}"
+    location: "{{location}}"
+
+- name: Create Security Group
+  azure.azcollection.azure_rm_securitygroup:
+    resource_group: "{{resource_group_name}}"
+    name: "{{security_group_name}}"
+    location: "{{location}}"
+    rules:
+      - name: AllowSSH
+        protocol: Tcp
+        destination_port_range: "{{ssh_port}}"
+        source_address_prefix: "*"
+        destination_address_prefix: "*"
+        access: Allow
+        priority: 100
+        direction: Inbound
+
+      - name: AllowHTTP
+        protocol: Tcp
+        destination_port_range: "{{http_port}}"
+        source_address_prefix: "*"
+        destination_address_prefix: "*"
+        access: Allow
+        priority: 110
+        direction: Inbound
+
+      - name: AllowHTTPS
+        protocol: Tcp
+        destination_port_range: "{{https_port}}"
+        source_address_prefix: "*"
+        destination_address_prefix: "*"
+        access: Allow
+        priority: 120
+        direction: Inbound
+
+- name: Create Virtual Network
+  azure.azcollection.azure_rm_virtualnetwork:
+    resource_group: "{{resource_group_name}}"
+    name: "{{virtual_network_name}}"
+    location: "{{location}}"
+    address_prefixes: "{{virtual_network_address_prefix}}"
+
+- name: Create Subnet inside the Virtual Network
+  azure.azcollection.azure_rm_subnet:
+    resource_group: "{{resource_group_name}}"
+    virtual_network: "{{virtual_network_name}}"
+    name: "{{virtual_network_subnet_name}}"
+    address_prefix: "{{virtual_network_subnet_address_prefix}}"
+    security_group: "{{security_group_name}}"
+
+- name: Create Public IP Address
+  azure.azcollection.azure_rm_publicipaddress:
+    resource_group: "{{resource_group_name}}"
+    name: "{{public_ip_name}}"
+    location: "{{location}}"
+    allocation_method: Static
+    sku: Standard
+    zones: 
+      - "2"
+
+- name: Create Network Interface
+  azure.azcollection.azure_rm_networkinterface:
+    resource_group: "{{resource_group_name}}"
+    name: "{{network_interface_name}}"
+    location: "{{location}}"
+    security_group: "{{security_group_name}}"
+    subnet_name: "{{virtual_network_subnet_name}}"
+    virtual_network: "{{virtual_network_name}}"
+    ip_configurations:
+      - name: default_ip_config
+        public_ip_address_name: "{{public_ip_name}}"
+        primary: true
+
+- name: Create VM in Azure
+  azure.azcollection.azure_rm_virtualmachine:
+    resource_group: "{{resource_group_name}}"
+    name: "{{vm_name}}"
+    location: "{{location}}"
+    vm_size: "{{vm_size}}"
+    managed_disk_type: "{{managed_disk_type}}"
+    image: "{{vm_image}}"
+    admin_username: "{{vm_admin_username}}"
+    admin_password: "{{vm_admin_password}}"
+    ssh_password_enabled: true
+    network_interfaces: 
+      - "{{network_interface_name}}"
+    zones: 
+      - "2"
+
+- name: Get Public IP Info
+  azure.azcollection.azure_rm_publicipaddress_info:
+    resource_group: "{{resource_group_name}}"
+    name: "{{public_ip_name}}"
+  register: public_ip_info
+
+
+- name: Dump public_ip_info
+  debug:
+    msg: |
+      SSH into VM: ssh {{ vm_admin_username }}@{{ public_ip_info.publicipaddresses[0].ip_address }}
+  when: 
+    - public_ip_info.publicipaddresses is defined
+    - public_ip_info.publicipaddresses | length > 0
