@@ -1,8 +1,28 @@
-resource_group: "{{ lookup('env', 'RESOURCE_GROUP') }}"
-security_group: "{{ lookup('env', 'SECURITY_GROUP') }}"
+resource_group_name: "{{ lookup('env', 'RESOURCE_GROUP_NAME') }}"
+location: "{{ lookup('env', 'LOCATION') }}"
 
+security_group_name: "{{ lookup('env', 'SECURITY_GROUP_NAME') }}"
 http_port: "{{ lookup('env', 'HTTP_PORT') }}"
 ssh_port: "{{ lookup('env', 'SSH_PORT') }}"
 https_port: "{{ lookup('env', 'HTTPS_PORT') }}"
 
-virtual_network: "{{ lookup('env', 'VIRTUAL_NETWORK') }}"
+virtual_network_name: "{{ lookup('env', 'VIRTUAL_NETWORK_NAME') }}"
+virtual_network_address_prefix: "{{ lookup('env', 'VIRTUAL_NETWORK_ADDRESS_PREFIX') }}"
+virtual_network_subnet_name: "{{ lookup('env', 'VIRTUAL_NETWORK_SUBNET_NAME') }}"
+virtual_network_subnet_address_prefix: "{{ lookup('env', 'VIRTUAL_NETWORK_SUBNET_ADDRESS_PREFIX') }}"
+
+public_ip_name: "{{ lookup('env', 'PUBLIC_IP_NAME') }}"
+
+network_interface_name: "{{ lookup('env', 'NETWORK_INTERFACE_NAME') }}"
+
+vm_name: "{{ lookup('env', 'VM_NAME') }}"
+vm_admin_username: "{{ lookup('env', 'VM_ADMIN_USERNAME') }}"
+vm_admin_password: "{{ lookup('env', 'VM_ADMIN_PASSWORD') }}"
+vm_size: "{{ lookup('env', 'VM_SIZE') }}"
+managed_disk_type: "{{ lookup('env', 'MANAGED_DISK_TYPE') }}"
+
+vm_image:
+  publisher: Canonical
+  offer: ubuntu-22_04-lts
+  sku: "server-arm64"
+  version: latest

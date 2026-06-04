@@ -1,17 +1,16 @@
-- name: Provision Azure Infrastructure
-  hosts: localhost
-  connection: local
-  roles:
-    - role: azure_infra
-      tasks_from: main.yml
-  tags: provision
+# - name: Provision Azure Infrastructure
+#   hosts: localhost
+#   connection: local
+#   roles:
+#     - role: azure_infra
+#       tasks_from: main.yml
+#   tags: 
+#     - provision
+#     - never
 
 - name: Destroy Azure Infrastructure
   hosts: localhost
   connection: local
   roles:
     - role: azure_infra
-      tasks_from: destroy
-  tags: 
-    - destroy
-    - never
+      tasks_from: destroy.yml

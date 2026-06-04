@@ -11,3 +11,6 @@ Prerequisites
 
 - Ansible azure collection installed (you can install it using `nsible-galaxy collection install azure.azcollection`).
 
+- Azure Python library installed (you can install it using `pip install azure`).
+
+requirements.txt!!!!
