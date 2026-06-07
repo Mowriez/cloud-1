@@ -53,6 +53,7 @@ services:
         - WP_TITLE={{ wp_site_title }}
         volumes:
             - wp_data:/var/www/html
+            - ./front-page.php:/var/www/html/wp-content/themes/twentytwentyfive/front-page.php
         networks:
             - wp_network
 

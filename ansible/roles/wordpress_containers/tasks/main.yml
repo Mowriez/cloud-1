@@ -53,6 +53,14 @@
     group: "{{ target_deploy_user }}"
     mode: '0644'
 
+- name: Upload automated HTML landing page
+  ansible.builtin.copy:
+    src: front-page.php
+    dest: "/home/{{ target_deploy_user }}/wordpress"
+    mode: '0644'
+    owner: 'www-data'
+    group: 'www-data'
+
 - name: Deploy docker compose from template
   ansible.builtin.template:
     src: docker-compose.yml.j2
