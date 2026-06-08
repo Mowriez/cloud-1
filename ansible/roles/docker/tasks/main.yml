@@ -1,45 +1,47 @@
-- name: Update apt cache
-  ansible.builtin.apt:
-    update_cache: true
+- name: Check if Docker and Docker Compose are already installed
+  ansible.builtin.shell: which docker && docker compose version
+  register: docker_check
+  failed_when: false
+  changed_when: false
 
-- name: Install dependencies
-  ansible.builtin.apt:
-    name:
-      - curl
-      - ca-certificates
-    state: present
+- name: Install Docker and components if missing
+  when: docker_check.rc != 0
+  block:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
 
-- name: Add GPG key
-  ansible.builtin.shell:
-    cmd: |
-      install -m 0755 -d /etc/apt/keyrings
-      curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-      chmod a+r /etc/apt/keyrings/docker.asc
+    - name: Install dependencies
+      ansible.builtin.apt:
+        name:
+          - curl
+          - ca-certificates
+        state: present
 
-- name: Add the repository to Apt sources
-  ansible.builtin.shell:
-    cmd: |
-      tee /etc/apt/sources.list.d/docker.sources <<EOF
-      Types: deb
-      URIs: https://download.docker.com/linux/ubuntu
-      Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
-      Components: stable
-      Architectures: $(dpkg --print-architecture)
-      Signed-By: /etc/apt/keyrings/docker.asc
-      EOF
+    - name: Download Docker GPG key safely
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: '0644'
 
-- name: Install docker
-  ansible.builtin.apt:
-    name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-buildx-plugin
-      - docker-compose-plugin
-    state: present
-    update_cache: yes
+    - name: Add Docker repository using gathered facts
+      ansible.builtin.apt_repository:
+        repo: "deb [arch={{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else 'arm64' }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_facts['distribution_release'] }} stable"
+        filename: docker
+        state: present
 
-- name: Add "{{ target_deploy_user }}" to docker group
+    - name: Install docker
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        update_cache: true
+
+- name: Ensure "{{ target_deploy_user }}" is in the docker group
   ansible.builtin.user:
     name: "{{ target_deploy_user }}"
     groups: docker
