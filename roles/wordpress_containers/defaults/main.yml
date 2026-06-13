@@ -1,4 +1,4 @@
-env_file_path: "{{ playbook_dir }}/../../.env"
+env_file_path: "{{ playbook_dir }}/.env"
 
 wp_db_name: "{{ lookup('ansible.builtin.ini', 'wp_db_name', type='properties', file=env_file_path) | default('wordpress', true) }}"
 wp_db_user: "{{ lookup('ansible.builtin.ini', 'wp_db_user', type='properties', file=env_file_path) | default('db_enjoyer', true) }}"

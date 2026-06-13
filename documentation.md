@@ -1,6 +1,13 @@
 # Cloud-1 Project Documentation
 ---
 ## 1. Prerequisites & Local Environment Setup
+### Infrastructure & Cloud Provisioning
+- An Azure account with appropriate permissions to create resources.
+- Azure CLI installed and configured on your local machine (`az login`).
+- An Azure Service Principal created for authentication (you can create one using the Azure CLI).
+- The `azure.env` file should be created with the necessary environment variables for Azure authentication.
+### Local Environment Configuration
+
 - Make sure you have `ansible` and `ansible-galaxy` installed on your machine
 
 	This project relies on external modules to manage system users, SSH authorization, and firewall configurations. Install the required collections by running the following commands in your terminal:
@@ -9,6 +16,8 @@
 	ansible-galaxy collection install community.general
 
 	ansible-galaxy collection install ansible.posix --force
+	ansible-galaxy collection install azure.azcollection
+	pip install azure
 	```
 
 - Environment Variables Configuration
@@ -31,7 +40,7 @@
   echo "your_vault_password_here" > .vault_pass
   ```
 
-- Create an `inventory.yml` in the `ansible/` folder. Populate it with your cloud target IPs
+- Create an `inventory.yml` in the `inventory/` folder. Populate it with your cloud target IPs
 	```
 	all:
 	  hosts:
@@ -42,18 +51,18 @@
 	    cloud-3:
 	      ansible_host: 10.12.2.8
 	```
-> **Execution Directory Tip:** Since the inventory file is located inside the `ansible/` folder, it is strongly recommended to execute all playbook commands from within this directory. If you choose to run commands from a different folder, you must explicitly append `-i [path/to/your/inventory.yml]` to your execution string, or override the default pathing inside an `ansible.cfg` file.
+> **Execution Directory Tip:** If you choose to run commands from a different folder, you must explicitly append `-i [path/to/your/inventory.yml]` to your execution string, or override the default pathing inside an `ansible.cfg` file.
 
 ## 2. First Run on a Freshly Provisioned Server
 Because a freshly provisioned cloud instance only has the provider's default administrative user, you must run the bootstrap playbook **once** to create your secure deployment user and authorize your local SSH key that you provide in your `.env`. <br>
-`ansible-playbook playbooks/first_setup.yml -u [server-user] -k -K`
+`ansible-playbook first_setup.yml -u [server-user] -k -K`
 - Replace `[server-user]` with the default administration username provided by your cloud host (e.g., ubuntu, debian, root).
 - `-k`: Prompts you for the default user's initial SSH password.
 - `-K`: Prompts you for the root/sudo password so Ansible has permissions to create the new account.
 
 ## 3. Deploy docker
 After that you can run <br>
-`ansible-playbook playbooks/main.yml`
+`ansible-playbook main.yml`
 <br>
 This command will run the roles in this order:
 - docker
