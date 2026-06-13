@@ -21,3 +21,5 @@
         tasks_from: teardown.yml
       tags:
         - teardown
+
+#TODO: Fix tags so empty tags don't cause issues with ansible-playbook command. Currently, if you run ansible-playbook with --tags provision, it will run both the provision and teardown tasks because the teardown tasks have an empty tags list.
