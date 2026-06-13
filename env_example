@@ -8,3 +8,4 @@ wp_admin_email=
 domain=
 wp_title=
 MAINTAINER_KEY_PATH=
+VM_IP=TARGET_HOST_IP_ADDRESS

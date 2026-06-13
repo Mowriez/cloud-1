@@ -1,3 +1,4 @@
-.env
 ansible/inventory.yml
 .vault_pass
+*.env
+venv
