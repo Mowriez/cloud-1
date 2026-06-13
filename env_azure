@@ -1,0 +1,22 @@
+export RESOURCE_GROUP_NAME=<resource_group_name>
+export LOCATION=<location>
+
+export SECURITY_GROUP_NAME=<security_group_name>
+export HTTP_PORT=80
+export SSH_PORT=22
+export HTTPS_PORT=443
+
+export VIRTUAL_NETWORK_NAME=<virtual_network_name>
+export VIRTUAL_NETWORK_ADDRESS_PREFIX=<virtual_network_range>
+export VIRTUAL_NETWORK_SUBNET_NAME=<virtual_network_subnet_name>
+export VIRTUAL_NETWORK_SUBNET_ADDRESS_PREFIX=<subnet_range>
+
+export PUBLIC_IP_NAME=<public_ip_name>
+
+export NETWORK_INTERFACE_NAME=<network_interface_name>
+
+export VM_NAME=<vm_name>
+export VM_ADMIN_USERNAME=<vm_admin_username>
+export VM_ADMIN_PASSWORD=<vm_admin_password>
+export VM_SIZE=<vm_size>
+export MANAGED_DISK_TYPE=<managed_disk_type>
