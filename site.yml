@@ -10,14 +10,14 @@
       tags: 
         - provision
 
-- name: Destroy Azure Infrastructure
+- name: Teardown Azure Infrastructure
   hosts: localhost
   connection: local
   gather_facts: false
   tasks:
-    - name: Run Destruction Tasks
+    - name: Run Teardown Tasks
       import_role:
         name: azure_infra
-        tasks_from: destroy.yml
+        tasks_from: teardown.yml
       tags:
-        - destroy
+        - teardown
