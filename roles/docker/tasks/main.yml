@@ -1,0 +1,48 @@
+- name: Check if Docker and Docker Compose are already installed
+  ansible.builtin.shell: which docker && docker compose version
+  register: docker_check
+  failed_when: false
+  changed_when: false
+
+- name: Install Docker and components if missing
+  when: docker_check.rc != 0
+  block:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install dependencies
+      ansible.builtin.apt:
+        name:
+          - curl
+          - ca-certificates
+        state: present
+
+    - name: Download Docker GPG key safely
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: '0644'
+
+    - name: Add Docker repository using gathered facts
+      ansible.builtin.apt_repository:
+        repo: "deb [arch={{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else 'arm64' }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_facts['distribution_release'] }} stable"
+        filename: docker
+        state: present
+
+    - name: Install docker
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        update_cache: true
+
+- name: Ensure "{{ target_deploy_user }}" is in the docker group
+  ansible.builtin.user:
+    name: "{{ target_deploy_user }}"
+    groups: docker
+    append: true

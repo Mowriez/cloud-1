@@ -26,3 +26,6 @@ vm_image:
   offer: ubuntu-22_04-lts
   sku: "server"
   version: latest
+
+  #TODO: Change to have image in env vars as well and change latest to specific version.
+  #TODO: Change lookup to check directly in env file without sourcing

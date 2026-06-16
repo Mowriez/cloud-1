@@ -1,1 +1,14 @@
+# You can change your remote user, default is ansible_user
+ansible_host_1=
+ansible_port_1=
+
+target_deploy_user=
+wp_db_name=
+wp_db_user=
+
+wp_admin_user=
+wp_admin_email=
+domain=
+wp_title=
+MAINTAINER_KEY_PATH=
 VM_IP=TARGET_HOST_IP_ADDRESS
