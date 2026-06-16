@@ -1,6 +1,6 @@
 all:
   hosts:
     cloud-1:
-      ansible_host: 127.0.0.1
-      ansible_port: 2222
+      ansible_host: "{{ lookup('ansible.builtin.ini', 'ansible_host_1', type='properties', file=playbook_dir ~ '/.env') }}"
+      ansible_port: "{{ lookup('ansible.builtin.ini', 'ansible_port_1', type='properties', file=playbook_dir ~ '/.env') }}"
       ansible_connection: ssh

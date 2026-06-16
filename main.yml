@@ -1,4 +1,4 @@
-- name: Deploy the wordpress site
+- name: Deploy services
   hosts: all
   become: true
   remote_user: "{{ lookup('ansible.builtin.ini', 'target_deploy_user', type='properties', file=playbook_dir ~ '/.env') | default('ansible_user', true) }}"
