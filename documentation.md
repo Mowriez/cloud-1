@@ -24,7 +24,6 @@ Installed in virtual environment:
 
 The following describes how to get the Azure deployment of this project up and running on a linux host machine.
 
-
 ### Handling Dependencies
 When running the ansible playbooks, there might be errors related to missing dependencies for the azure collection modules. If you encounter such errors, you can find the required dependencies in the `requirements.txt` file. Make sure your virtual environment is activated, locate the file at:
 
@@ -38,24 +37,20 @@ pip install -r requirements.txt
 
 ### Secrets
 
-Adapt the `env_azure` file in the root directory of the project with your actual configuration. Rename it to `azure.env` - which is included in the `.gitignore` file to prevent accidental commits.
+Adapt the `group_vars/all.yml` file with your actual configuration. 
 
 Load the environment variables from the `azure.env` file before running the Ansible playbooks:
-
-```bash
-source azure.env
-```
 
 ### Running the Ansible Playbooks
 
 #### Deployment
 
-To deploy the infrastructure on Azure, run the following command from the root directory of the project:
+To provision the infrastructure on Azure, run the following command from the root directory of the project:
 
 ```bash
-ansible-playbook site.yml --tag provision
+ansible-playbook provision.yml
 ```
-This command will execute the Ansible playbook and provision the necessary resources on Azure as defined in the `site.yml` playbook. Make sure to review the playbook and adjust any parameters or configurations as needed for your specific deployment requirements.
+Make sure to review the playbook and adjust any parameters or configurations as needed for your specific deployment requirements.
 
 > In a new Azure subscription, you might need to register the required resource providers (Microsoft.Compute, Microsoft.Network) before running the playbook. You can do this using the Azure CLI with the following command (or directly in the Azure portal):
 
@@ -74,10 +69,10 @@ az vm list --resource-group <RESOURCE_GROUP_NAME> --output table
 To tear down the infrastructure and remove the resources from Azure, run the following command:
 
 ```bash
-ansible-playbook site.yml --tag teardown
+ansible-playbook teardown.yml
 ```
 
-This command will execute the Ansible playbook and delete the resources that were provisioned on Azure. Make sure to review the playbook and confirm that you want to delete the resources, as this action is irreversible and will result in the loss of any data stored in those resources. After the teardown is complete, you can verify that the resources have been deleted successfully by checking the Azure portal or using the Azure CLI. For example, to check if the resource group has been deleted, you can use:
+This command will execute the Ansible playbook and delete the resources that were provisioned on Azure. Make sure to review the playbook and confirm that you want to delete the resources, as this action is irreversible and will result in the loss of any data stored in those resources. After the teardown is complete, verify that the resources have been deleted successfully by checking the Azure portal or using the Azure CLI. For example, to check if the resource group has been deleted, you can use:
 
 ```bash
 az group show --name <RESOURCE_GROUP_NAME>
