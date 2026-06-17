@@ -1,0 +1,52 @@
+# Ansible vars
+ansible_user: example_ansible_user
+ansible_ssh_private_key_file: insert absolute path to your private key here, e.g. ~/.ssh/id_rsa
+
+# Azure resource parameters
+
+resource_group_name: example_RG
+location: insert location (might be depending on where VMs are available in your subscription)
+
+security_group_name: example_SG
+
+http_port: 80
+ssh_port: 22
+https_port: 443
+
+virtual_network_name: example_VNet
+virtual_network_address_prefix: insert desired private network ip and range
+virtual_network_subnet_name: example_Subnet
+virtual_network_subnet_address_prefix: insert desired project subnet ip and range
+public_ip_name: example_IP
+
+network_interface_name: example_NIC
+
+vm_name: exampleVM
+vm_admin_username: example_user
+vm_admin_password: example_password
+ssh_public_key_file_path: insert absolute path to your public key here, e.g. ~/.ssh/id_rsa.pub
+vm_size: insert VM sku here (research in Azure to find fitting sku for your project)
+managed_disk_type: insert VM disk type here (research in Azure to find fitting type for your project)
+
+vm_image:
+  publisher: insert vm image that fits your vm sku defined above. Find available images in azure docs
+  offer: 
+  sku: 
+  version: 
+
+# Deployment parameters
+
+ansible_host_1: insert ip generated above
+ansible_port_1: 22
+
+wp_db_name: example_wp_db
+wp_db_user: example_wp_db_user
+wp_db_password: example_password
+db_root_password: example_password
+
+wp_admin_user: example_wp_admin_user
+wp_admin_password: example_password
+wp_admin_email: example_wp_admin_user@exampledomain.com
+wp_site_url: "https://exampledomain.com"
+wp_site_url_domain: "{{ wp_site_url | urlsplit('hostname') | default('localhost', true) }}"
+wp_title: example title
