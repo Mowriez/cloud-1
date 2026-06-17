@@ -85,6 +85,9 @@
     admin_username: "{{vm_admin_username}}"
     admin_password: "{{vm_admin_password}}"
     ssh_password_enabled: true
+    ssh_public_keys:
+      - path: "/home/{{vm_admin_username}}/.ssh/authorized_keys"
+        key_data: "{{ lookup('file', ssh_public_key_file_path) }}"
     network_interfaces: 
       - "{{network_interface_name}}"
     zones: 
@@ -96,8 +99,7 @@
     name: "{{public_ip_name}}"
   register: public_ip_info
 
-
-- name: Dump public_ip_info
+- name: Print Public IP Info
   debug:
     msg: |
       SSH into VM: ssh {{ vm_admin_username }}@{{ public_ip_info.publicipaddresses[0].ip_address }}

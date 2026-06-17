@@ -1,0 +1,9 @@
+- name: Teardown Azure Infrastructure
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Run Teardown Tasks
+      import_role:
+        name: azure_infra
+        tasks_from: teardown.yml

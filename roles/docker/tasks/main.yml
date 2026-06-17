@@ -41,8 +41,8 @@
         state: present
         update_cache: true
 
-- name: Ensure "{{ target_deploy_user }}" is in the docker group
+- name: Ensure "{{ vm_admin_username }}" is in the docker group
   ansible.builtin.user:
-    name: "{{ target_deploy_user }}"
+    name: "{{ vm_admin_username }}"
     groups: docker
     append: true

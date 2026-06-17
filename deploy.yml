@@ -1,0 +1,8 @@
+- name: Deploy services
+  hosts: cloud-1
+  become: true
+ 
+  roles:
+    - docker
+    - ufw
+    - wordpress_containers

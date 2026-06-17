@@ -1,31 +1,28 @@
-resource_group_name: "{{ lookup('env', 'RESOURCE_GROUP_NAME') }}"
-location: "{{ lookup('env', 'LOCATION') }}"
+# Fallback variables for the Azure infrastructure role.
 
-security_group_name: "{{ lookup('env', 'SECURITY_GROUP_NAME') }}"
-http_port: "{{ lookup('env', 'HTTP_PORT') }}"
-ssh_port: "{{ lookup('env', 'SSH_PORT') }}"
-https_port: "{{ lookup('env', 'HTTPS_PORT') }}"
+resource_group_name: Default_RG
+location: switzerlandnorth
 
-virtual_network_name: "{{ lookup('env', 'VIRTUAL_NETWORK_NAME') }}"
-virtual_network_address_prefix: "{{ lookup('env', 'VIRTUAL_NETWORK_ADDRESS_PREFIX') }}"
-virtual_network_subnet_name: "{{ lookup('env', 'VIRTUAL_NETWORK_SUBNET_NAME') }}"
-virtual_network_subnet_address_prefix: "{{ lookup('env', 'VIRTUAL_NETWORK_SUBNET_ADDRESS_PREFIX') }}"
+security_group_name: Default_SG
 
-public_ip_name: "{{ lookup('env', 'PUBLIC_IP_NAME') }}"
+http_port: 80
+ssh_port: 22
+https_port: 443
 
-network_interface_name: "{{ lookup('env', 'NETWORK_INTERFACE_NAME') }}"
+virtual_network_name: Default_VNet
+virtual_network_address_prefix: 10.0.0.0/20
+virtual_network_subnet_name: Default_Subnet
+virtual_network_subnet_address_prefix: 10.0.1.0/24
 
-vm_name: "{{ lookup('env', 'VM_NAME') }}"
-vm_admin_username: "{{ lookup('env', 'VM_ADMIN_USERNAME') }}"
-vm_admin_password: "{{ lookup('env', 'VM_ADMIN_PASSWORD') }}"
-vm_size: "{{ lookup('env', 'VM_SIZE') }}"
-managed_disk_type: "{{ lookup('env', 'MANAGED_DISK_TYPE') }}"
+public_ip_name: Default_PublicIP
+
+network_interface_name: Default_NIC
+
+vm_size: Standard_B2as_v2
+managed_disk_type: StandardSSD_LRS
 
 vm_image:
   publisher: Canonical
-  offer: ubuntu-22_04-lts
-  sku: "server"
-  version: latest
-
-  #TODO: Change to have image in env vars as well and change latest to specific version.
-  #TODO: Change lookup to check directly in env file without sourcing
+  offer: 0001-com-ubuntu-server-jammy
+  sku: 22_04-lts-gen2
+  version: 22.04.202606110
