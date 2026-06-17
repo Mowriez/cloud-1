@@ -6,9 +6,9 @@ services:
             - "80:80"
             - "443:443"
         volumes:
-            - /home/{{ target_deploy_user }}/wordpress/nginx.conf:/etc/nginx/nginx.conf:ro
-            - /home/{{ target_deploy_user }}/wordpress/certs/fullchain.pem:/etc/nginx/certs/fullchain.pem:ro
-            - /home/{{ target_deploy_user }}/wordpress/certs/privkey.pem:/etc/nginx/certs/privkey.pem:ro
+            - /home/{{ vm_admin_username }}/wordpress/nginx.conf:/etc/nginx/nginx.conf:ro
+            - /home/{{ vm_admin_username }}/wordpress/certs/fullchain.pem:/etc/nginx/certs/fullchain.pem:ro
+            - /home/{{ vm_admin_username }}/wordpress/certs/privkey.pem:/etc/nginx/certs/privkey.pem:ro
             - wp_data:/var/www/html:ro
         restart: always
         networks:
@@ -36,7 +36,7 @@ services:
             - wp_network
     wordpress:
         build:
-            context: /home/{{ target_deploy_user }}/wordpress
+            context: /home/{{ vm_admin_username }}/wordpress
             dockerfile: Dockerfile
         container_name: wordpress
         restart: always

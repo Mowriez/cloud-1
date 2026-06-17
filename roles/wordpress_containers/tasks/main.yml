@@ -4,26 +4,26 @@
 
 - name: Create WordPress directory
   ansible.builtin.file:
-    path: "/home/{{ target_deploy_user }}/wordpress"
+    path: "/home/{{ vm_admin_username }}/wordpress"
     state: directory
     mode: '0755'
 
 - name: Ensure the certs directory exists
   ansible.builtin.file:
-    path: "/home/{{ target_deploy_user }}/wordpress/certs"
+    path: "/home/{{ vm_admin_username }}/wordpress/certs"
     state: directory
     mode: '0755'
 
 - name: Nginx config from template
   template:
     src: nginx.conf.j2
-    dest: "/home/{{ target_deploy_user }}/wordpress/nginx.conf"
+    dest: "/home/{{ vm_admin_username }}/wordpress/nginx.conf"
     mode: '0644'
 
 - name: Copy build assets to remote host
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "/home/{{ target_deploy_user }}/wordpress/{{ item }}"
+    dest: "/home/{{ vm_admin_username }}/wordpress/{{ item }}"
     mode: '0755'
   loop:
     - Dockerfile
@@ -31,32 +31,32 @@
 
 - name: Ensure target directory exists for certificates on the server
   file:
-    path: "/home/{{ target_deploy_user }}/wordpress/certs"
+    path: "/home/{{ vm_admin_username }}/wordpress/certs"
     state: directory
-    owner: "{{ target_deploy_user }}"
-    group: "{{ target_deploy_user }}"
+    owner: "{{ vm_admin_username }}"
+    group: "{{ vm_admin_username }}"
     mode: '0755'
 
 - name: Securely upload and decrypt SSL Private Key
   copy:
     src: certs/privkey.pem
-    dest: "/home/{{ target_deploy_user }}/wordpress/certs/privkey.pem"
-    owner: "{{ target_deploy_user }}"
-    group: "{{ target_deploy_user }}"
+    dest: "/home/{{ vm_admin_username }}/wordpress/certs/privkey.pem"
+    owner: "{{ vm_admin_username }}"
+    group: "{{ vm_admin_username }}"
     mode: '0600'
 
 - name: Securely upload and decrypt SSL Full Chain Certificate
   copy:
     src: certs/fullchain.pem
-    dest: "/home/{{ target_deploy_user }}/wordpress/certs/fullchain.pem"
-    owner: "{{ target_deploy_user }}"
-    group: "{{ target_deploy_user }}"
+    dest: "/home/{{ vm_admin_username }}/wordpress/certs/fullchain.pem"
+    owner: "{{ vm_admin_username }}"
+    group: "{{ vm_admin_username }}"
     mode: '0644'
 
 - name: Upload automated HTML landing page
   ansible.builtin.copy:
     src: front-page.php
-    dest: "/home/{{ target_deploy_user }}/wordpress"
+    dest: "/home/{{ vm_admin_username }}/wordpress"
     mode: '0644'
     owner: 'www-data'
     group: 'www-data'
@@ -64,11 +64,11 @@
 - name: Deploy docker compose from template
   ansible.builtin.template:
     src: docker-compose.yml.j2
-    dest: "/home/{{ target_deploy_user }}/wordpress/docker-compose.yml"
+    dest: "/home/{{ vm_admin_username }}/wordpress/docker-compose.yml"
     mode: "0644"
 
 - name: Bring up the complete Docker Compose Stack
   community.docker.docker_compose_v2:
-    project_src: "/home/{{ target_deploy_user }}/wordpress"
+    project_src: "/home/{{ vm_admin_username }}/wordpress"
     state: present
     build: always
