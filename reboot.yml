@@ -1,5 +1,5 @@
 - name: Reboot remote
-  hosts: all
+  hosts: cloud-1
   become: true
   tasks:
     - name: Print reboot starting
