@@ -96,7 +96,6 @@
     name: "{{public_ip_name}}"
   register: public_ip_info
 
-
 - name: Dump public_ip_info
   debug:
     msg: |
