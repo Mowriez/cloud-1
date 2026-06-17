@@ -3,9 +3,13 @@
   become: true
   remote_user: "{{ lookup('ansible.builtin.ini', 'target_deploy_user', type='properties', file=playbook_dir ~ '/.env') | default('ansible_user', true) }}"
   tasks:
+    - name: Print reboot starting
+      ansible.builtin.debug:
+        msg: Rebooting...
+  
     - name: Reboot
       ansible.builtin.reboot:
 
     - name: Print success
       ansible.builtin.debug:
-        msg: Rebooting...
+        msg: Rebooting completed successfully.
