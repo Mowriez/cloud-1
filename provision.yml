@@ -1,0 +1,9 @@
+- name: Provision Azure Infrastructure
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Run Provisioning Tasks
+      import_role:
+        name: azure_infra
+        tasks_from: main.yml
