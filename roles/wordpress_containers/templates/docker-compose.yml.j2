@@ -15,6 +15,7 @@ services:
             wp_network:
                 aliases:
                     - localhost
+
     database:
         image: mysql:8.0
         container_name: database
@@ -28,12 +29,17 @@ services:
             - db_data:/var/lib/mysql
         networks:
             - wp_network
+
     phpmyadmin:
         image: phpmyadmin:5.2.3
         container_name: phpmyadmin
         restart: always
         networks:
             - wp_network
+        environment:
+            PMA_HOST: database
+            PMA_ABSOLUTE_URI: https://{{ wp_site_url_domain }}/phpmyadmin/
+
     wordpress:
         build:
             context: /home/{{ vm_admin_username }}/wordpress

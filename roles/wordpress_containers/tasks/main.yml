@@ -33,7 +33,6 @@
     group: "{{ vm_admin_username }}"
     mode: '0755'
 
-# TODO: Fix the certs 
 - name: Securely upload and decrypt SSL Private Key
   copy:
     src: certs/privkey.pem
