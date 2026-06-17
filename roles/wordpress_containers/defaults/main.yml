@@ -1,4 +1,4 @@
-# fallback vars
+# Fallback variables for the wordpress deployment role.
 
 wp_db_name: "wordpress"
 wp_db_user: "db_enjoyer"

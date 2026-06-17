@@ -1,7 +1,3 @@
-- name: Load encrypted vault secrets
-  include_vars:
-    file: vault.yml
-
 - name: Create WordPress directory
   ansible.builtin.file:
     path: "/home/{{ vm_admin_username }}/wordpress"
@@ -37,6 +33,7 @@
     group: "{{ vm_admin_username }}"
     mode: '0755'
 
+# TODO: Fix the certs 
 - name: Securely upload and decrypt SSL Private Key
   copy:
     src: certs/privkey.pem
