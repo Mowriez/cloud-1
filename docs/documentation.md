@@ -13,8 +13,7 @@ Installed on host machine:
 Installed in virtual environment (`python3 -m venv .venv` -> `. .venv/bin/activate`):
 - Pip installed: `pip --version` >= 25.1.1
 - Ansible installed: `pip install ansible`  >= 2.21.0
-- Ansible Galaxy CLI installed: `pip install ansible-galaxy` >= 2.21.0
-- Azure Python SDK: `pip install azure` >= 5.0.0
+- Ansible Galaxy CLI installed: `ansible-galaxy collection list`
 - The following collections: 
     - `ansible-galaxy collection install azure.azcollection`
     - `ansible-galaxy collection install --force ansible.posix`
